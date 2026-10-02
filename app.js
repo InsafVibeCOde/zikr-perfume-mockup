@@ -79,7 +79,7 @@
     current = p;
     const first = p.volumes.find(v => v.price != null) || p.volumes[0];
     const tiles = [
-      ['Пол', p.gender], ['Концентрация', p.conc], ['Характер', p.family && p.family.join(', ')], ['Год', p.year]
+      ['Концентрация', p.conc], ['Характер', p.family && p.family.join(', ')], ['Год', p.year]
     ].filter(t => t[1]);
 
     $('.modal-inner', modal).innerHTML = `
@@ -160,7 +160,7 @@
   /* ---------- каталог ---------- */
   const grid = $('#catalog');
   if (grid) {
-    const state = { q: '', format: 'all', gender: 'all', family: 'all', brand: 'all', sort: 'default' };
+    const state = { q: '', format: 'all', family: 'all', brand: 'all', sort: 'default' };
     const params = new URLSearchParams(location.search);
     if (params.get('f') === 'decant') state.format = 'decant';
 
@@ -178,7 +178,6 @@
       let list = DATA.filter(p =>
         words.every(w => haystack(p).includes(w)) &&
         (state.format === 'all' || (state.format === 'decant' ? hasDecant(p) : p.volumes.some(v => !v.decant))) &&
-        (state.gender === 'all' || p.gender === state.gender || (state.gender !== 'Унисекс' && p.gender === 'Унисекс')) &&
         (state.family === 'all' || (p.family || []).includes(state.family)) &&
         (state.brand === 'all' || p.brand === state.brand));
       if (state.sort === 'asc') list = [...list].sort((a, b) => minPrice(a) - minPrice(b));
@@ -189,12 +188,10 @@
       $('#empty').hidden = list.length > 0;
       grid.hidden = list.length === 0;
       document.querySelectorAll('[data-format]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.format === state.format)));
-      document.querySelectorAll('[data-gender]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.gender === state.gender)));
     }
 
     $('#q').addEventListener('input', e => { state.q = e.target.value; render(); });
     document.querySelectorAll('[data-format]').forEach(b => b.addEventListener('click', () => { state.format = b.dataset.format; render(); }));
-    document.querySelectorAll('[data-gender]').forEach(b => b.addEventListener('click', () => { state.gender = b.dataset.gender; render(); }));
     $('#f-family').addEventListener('change', e => { state.family = e.target.value; render(); });
     $('#f-brand').addEventListener('change', e => { state.brand = e.target.value; render(); });
     $('#f-sort').addEventListener('change', e => { state.sort = e.target.value; render(); });

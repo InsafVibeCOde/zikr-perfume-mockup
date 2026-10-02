@@ -5,7 +5,7 @@
 window.CATALOG = [
   {
     id: 'interlude-53', brand: 'Amouage', name: 'Interlude 53', conc: 'Extrait de Parfum',
-    img: null, gender: 'Мужской', family: ['Дымные', 'Пряные'], featured: true,
+    img: null, family: ['Дымные', 'Пряные'], featured: true,
     line: 'Дым, ладан и кожа. Тяжёлый вечерний аромат с цитрусовым стартом.',
     top: ['Орегано', 'Душистый перец', 'Бергамот'],
     heart: ['Ладан', 'Амбра', 'Опопонакс', 'Лабданум'],
@@ -14,7 +14,7 @@ window.CATALOG = [
   },
   {
     id: 'blonde-amber', brand: 'Clive Christian', name: 'Blonde Amber', conc: 'Perfume',
-    img: null, gender: 'Унисекс', family: ['Амбровые', 'Табачные'], year: 2022, featured: true,
+    img: null, family: ['Амбровые', 'Табачные'], year: 2022, featured: true,
     line: 'Мёд, белый табак и ваниль. Звучит статусно и долго держится.',
     top: ['Олибанум', 'Имбирь', 'Бергамот', 'Грейпфрут'],
     heart: ['Белый табак', 'Сандал', 'Шафран', 'Османтус', 'Жасмин'],
@@ -27,14 +27,14 @@ window.CATALOG = [
   },
   {
     id: 'red-tobacco', brand: 'Mancera', name: 'Red Tobacco', conc: 'Eau de Parfum',
-    img: 'img/red-tobacco.jpg', gender: 'Унисекс', family: ['Табачные', 'Пряные'], featured: true,
+    img: 'img/red-tobacco.jpg', family: ['Табачные', 'Пряные'], featured: true,
     line: 'Корица, уд и табак. Тёплый, обволакивающий, для холодов.',
     top: ['Корица', 'Уд', 'Ладан'], heart: ['Пачули', 'Жасмин'], base: ['Табак', 'Сандал', 'Амбра', 'Ветивер'],
     volumes: [{ ml: 60, price: 10900 }, { ml: 120, price: 13900 }]
   },
   {
     id: 'ombre-leather', brand: 'Tom Ford', name: 'Ombré Leather', conc: 'Eau de Parfum',
-    img: 'img/ombre-leather.jpg', gender: 'Унисекс', family: ['Кожаные'], featured: true,
+    img: 'img/ombre-leather.jpg', family: ['Кожаные'], featured: true,
     line: 'Запах салона нового мерседеса. Лучший из кожаных у Tom Ford.',
     top: ['Кардамон'], heart: ['Кожа'], base: ['Амбра'],
     volumes: [
@@ -51,14 +51,14 @@ window.CATALOG = [
   },
   {
     id: 'layton', brand: 'Parfums de Marly', name: 'Layton', conc: 'Eau de Parfum',
-    img: null, gender: 'Мужской', family: ['Свежие', 'Древесные'],
+    img: null, family: ['Свежие', 'Древесные'],
     line: 'Бергамот и лаванда, фиалка, внизу сандал. Самый популярный у PDM.',
     top: ['Бергамот', 'Лаванда'], heart: ['Фиалка'], base: ['Сандал'],
     volumes: [{ ml: 75, price: 17900 }, { ml: 125, price: 22900 }]
   },
   {
     id: 'althair', brand: 'Parfums de Marly', name: 'Althair', conc: 'Eau de Parfum',
-    img: null, gender: 'Мужской', family: ['Сладкие', 'Пряные'],
+    img: null, family: ['Сладкие', 'Пряные'],
     line: 'Ваниль с корицей и пралине. Сладкий, но не приторный.',
     top: ['Корица', 'Кардамон', 'Бергамот'], heart: ['Ваниль'], base: ['Пралине', 'Мускус'],
     volumes: [{ ml: 5, price: null, decant: true }, { ml: 10, price: null, decant: true }]
@@ -96,14 +96,14 @@ window.CATALOG = [
   },
   {
     id: 'turathi-purple', brand: 'Afnan', name: 'Turathi Purple', conc: 'Eau de Parfum',
-    img: null, gender: 'Женский', similar: 'Gucci Guilty Absolute pour Femme', family: ['Цветочные', 'Фруктовые'],
+    img: null, similar: 'Gucci Guilty Absolute pour Femme', family: ['Цветочные', 'Фруктовые'],
     line: 'Красные фрукты с кардамоном, ваниль и мох в базе.',
     top: ['Кардамон', 'Красные фрукты', 'Чёрный перец'], heart: ['Ананас', 'Жасмин'], base: ['Пачули', 'Мох', 'Ваниль'],
     volumes: [{ ml: 10, price: null, decant: true }, { ml: 90, price: 6000 }]
   },
   {
     id: 'tribute-blue', brand: 'Afnan', name: 'Tribute Blue', conc: 'Eau de Parfum',
-    img: 'img/tribute.jpg', gender: 'Мужской', family: ['Пряные', 'Древесные'],
+    img: 'img/tribute.jpg', family: ['Пряные', 'Древесные'],
     line: 'Мускатный орех и кашемировое дерево. Пряный и спокойный.',
     top: ['Мускатный орех', 'Пименто', 'Бергамот'], heart: ['Амбра', 'Кашемировое дерево'], base: ['Мускус', 'Ветивер', 'Ладан'],
     volumes: [{ ml: 5, price: null, decant: true }, { ml: 10, price: null, decant: true }, { ml: 100, price: null }]
