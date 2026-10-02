@@ -326,11 +326,11 @@
     animate();
   }
 
-  /* ---------- интро: один раз за визит ---------- */
+  /* ---------- интро: при каждом открытии сайта, но не при переходе на главную изнутри сайта ---------- */
   const intro = $('#intro');
   if (intro) {
     let seen = false;
-    try { seen = sessionStorage.getItem('zikr-intro') === '1'; } catch (e) {}
+    try { seen = !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (e) {}
     if (new URLSearchParams(location.search).has('intro')) seen = false;
     if (seen) { intro.remove(); startAnimations(); return; }
     document.body.classList.add('is-locked');
@@ -340,7 +340,6 @@
       setTimeout(() => {
         intro.remove();
         document.body.classList.remove('is-locked');
-        try { sessionStorage.setItem('zikr-intro', '1'); } catch (e) {}
       }, 2100);
     };
     (document.fonts ? document.fonts.load('700 100px Antonio') : Promise.resolve()).catch(() => {}).then(start);
