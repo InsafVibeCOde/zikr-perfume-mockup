@@ -4,72 +4,79 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Каталог — ZIKR PERFUME</title>
+<title>Парфюмерия — ZIKR PERFUME</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:wght@700;800&family=Sofia+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Tenor+Sans&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<header class="header header--solid">
+<div class="topbar">
   <div class="wrap">
-    <a class="logo" href="index.html"><img src="img/logo-white.png" alt="ZIKR PERFUME"></a>
+    <div><span>Бутик в Казани у Чёрного озера</span><span>Доставка по России 2–3 дня</span></div>
+    <div><a href="tel:+79655857722">+7 965 585-77-22</a><a href="https://t.me/yuzeevv" target="_blank" rel="noopener">Telegram</a><a href="https://wa.me/79655857722" target="_blank" rel="noopener">WhatsApp</a></div>
+  </div>
+</div>
+
+<header class="header">
+  <div class="wrap header-main">
+    <a class="logo" href="index.html"><img src="img/logo-black.png" alt="ZIKR PERFUME"></a>
+    <form class="search-form" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" name="q" type="search" placeholder="Бренд, аромат или ноты" aria-label="Поиск по каталогу" autocomplete="off">
+    </form>
+    <nav class="header-links" aria-label="Связь">
+      <a href="https://t.me/yuzeevv" target="_blank" rel="noopener">Telegram</a>
+      <a href="https://wa.me/79655857722" target="_blank" rel="noopener">WhatsApp</a>
+    </nav>
+  </div>
+  <div class="wrap">
     <nav class="nav" aria-label="Разделы">
-      <a href="catalog.html" aria-current="page">Каталог</a>
+      <a href="catalog.html" aria-current="page">Весь парфюм</a>
       <a href="catalog.html?f=decant">Распив</a>
+      <a href="index.html#brands-block">Бренды</a>
       <a href="index.html#boutique">Бутик</a>
       <a href="index.html#delivery">Доставка</a>
     </nav>
-    <a class="header-phone" href="tel:+79655857722">+7 965 585-77-22</a>
-    <a class="btn btn-white" href="https://t.me/yuzeevv" target="_blank" rel="noopener">Написать в Telegram</a>
   </div>
 </header>
 
-<main>
-  <section class="cat-head">
-    <div class="wrap">
-      <h1 class="display">Каталог<span class="cat-count"><span id="total"></span> ароматов</span></h1>
+<main class="wrap">
+  <div class="crumbs"><a href="index.html">Главная</a> / Парфюмерия</div>
+  <div class="cat-title"><h1>Парфюмерия</h1><span class="mute"><span id="shown"></span> ароматов</span></div>
 
-      <label class="search">
-        <span class="mute" aria-hidden="true">Поиск</span>
-        <input id="q" type="search" placeholder="Бренд, аромат или ноты: табак, кожа, ваниль" autocomplete="off">
-      </label>
+  <div class="cat-layout">
+    <aside class="filters" aria-label="Фильтры">
+      <div class="filter"><h3>Формат</h3><div id="f-format"></div></div>
+      <div class="filter"><h3>Характер</h3><div id="f-family"></div></div>
+      <div class="filter"><h3>Бренд</h3><div id="f-brand"></div></div>
+      <button class="reset" id="reset" type="button">Сбросить фильтры</button>
+    </aside>
 
-      <div class="filters">
-        <button class="chip" type="button" data-format="all">Все</button>
-        <button class="chip" type="button" data-format="decant">Есть распив</button>
-        <button class="chip" type="button" data-format="full">Флаконы</button>
-        <span class="sep" aria-hidden="true"></span>
-        <select class="select" id="f-family" aria-label="Характер"><option value="all">Любой характер</option></select>
-        <select class="select" id="f-brand" aria-label="Бренд"><option value="all">Все бренды</option></select>
-      </div>
-    </div>
-  </section>
-
-  <section class="cat-body">
-    <div class="wrap">
-      <div class="cat-meta">
-        <span>Показано: <span id="shown"></span></span>
+    <section>
+      <div class="cat-top">
+        <button class="btn btn-line filters-toggle" type="button">Фильтры</button>
+        <span></span>
         <select class="select" id="f-sort" aria-label="Сортировка">
           <option value="default">Сначала популярные</option>
           <option value="asc">Сначала дешевле</option>
           <option value="desc">Сначала дороже</option>
         </select>
       </div>
-      <div class="grid" id="catalog"></div>
+      <div class="grid grid--4" id="catalog"></div>
       <div class="empty" id="empty" hidden>
-        <p class="display">Такого пока нет в каталоге</p>
-        <p class="mute" style="margin-top:12px">Напишите, какой аромат ищете. Многое привозим под заказ.</p>
-        <a class="btn btn-black" id="empty-tg" target="_blank" rel="noopener">Написать в Telegram</a>
+        <h2>Такого пока нет в каталоге</h2>
+        <p>Напишите, какой аромат ищете. Многое привозим под заказ.</p>
+        <a class="btn btn-wine" id="empty-tg" target="_blank" rel="noopener">Написать в Telegram</a>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </main>
 
-<footer class="footer dark">
+<footer class="footer">
   <div class="wrap">
-    <div class="footer-bottom" style="margin-top:0">
+    <div class="footer-bottom" style="margin-top:0;border-top:0;padding-top:0">
       <span>© ZIKR PERFUME, 2026. Казань, ул. Дзержинского, 9/1</span>
       <a href="tel:+79655857722">+7 965 585-77-22</a>
     </div>
@@ -77,8 +84,8 @@
 </footer>
 
 <div class="mbar">
-  <a class="btn btn-white" href="https://t.me/yuzeevv" target="_blank" rel="noopener">Telegram</a>
-  <a class="btn btn-outline" style="color:#fff" href="https://wa.me/79655857722" target="_blank" rel="noopener">WhatsApp</a>
+  <a class="btn btn-wine" href="https://t.me/yuzeevv" target="_blank" rel="noopener">Telegram</a>
+  <a class="btn btn-line" href="https://wa.me/79655857722" target="_blank" rel="noopener">WhatsApp</a>
 </div>
 
 <dialog class="modal" id="modal" aria-label="Карточка аромата">
