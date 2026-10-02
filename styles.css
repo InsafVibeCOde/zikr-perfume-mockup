@@ -278,6 +278,37 @@ body.is-locked { overflow: hidden; }
   .card-img img { transition: none; }
 }
 
+/* ---------- плавность ---------- */
+html { scroll-behavior: smooth; scroll-padding-top: 130px; }
+.js-anim .reveal { opacity: 0; transform: translateY(18px); }
+.js-anim .reveal.is-in {
+  opacity: 1; transform: none;
+  transition: opacity .8s cubic-bezier(.2, .7, .2, 1) var(--d, 0s), transform .8s cubic-bezier(.2, .7, .2, 1) var(--d, 0s);
+}
+.js-anim .fade-img { opacity: 0; transition: opacity .7s ease, transform .6s cubic-bezier(.2, .7, .2, 1); }
+.js-anim .fade-img.is-loaded { opacity: 1; }
+.card-img img { transition: opacity .7s ease, transform .9s cubic-bezier(.2, .7, .2, 1); }
+.card:hover .card-img img { transform: scale(1.04); }
+.card-name, .card-brand { transition: color .2s; }
+.card:hover .card-name { color: var(--wine-2); }
+.banner-photo { overflow: hidden; }
+.banner-photo img { transition: opacity .7s ease, transform 1.4s cubic-bezier(.2, .7, .2, 1); }
+.banner:hover .banner-photo img { transform: scale(1.04); }
+.brand-tile, .chip, .btn { transition: background .25s, border-color .25s, color .25s, transform .15s; }
+.btn:active, .chip:active { transform: scale(.98); }
+.modal[open] { animation: modalIn .45s cubic-bezier(.2, .7, .2, 1); }
+.modal[open]::backdrop { animation: backdropIn .35s ease; }
+.m-price, .decant-price { animation: priceIn .35s ease; }
+@keyframes modalIn { from { opacity: 0; transform: translateY(24px) scale(.985); } }
+@keyframes backdropIn { from { opacity: 0; } }
+@keyframes priceIn { from { opacity: .2; transform: translateY(4px); } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js-anim .reveal, .js-anim .fade-img { opacity: 1; transform: none; transition: none; }
+  .modal[open], .modal[open]::backdrop, .m-price, .decant-price { animation: none; }
+  .banner-photo img, .card-img img { transition: none; }
+}
+
 /* ---------- интро ---------- */
 .intro { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: var(--wine); color: var(--ivory); }
 .mark { font-family: "Antonio", sans-serif; text-align: center; line-height: 1; }

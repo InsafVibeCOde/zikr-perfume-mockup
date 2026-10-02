@@ -117,7 +117,9 @@
   function selectVolume(i) {
     const p = current, v = p.volumes[i];
     $$('.chip', modal).forEach(c => c.setAttribute('aria-pressed', String(+c.dataset.i === i)));
-    $('.m-price', modal).innerHTML = v.price != null
+    const priceEl = $('.m-price', modal);
+    priceEl.style.animation = 'none'; void priceEl.offsetWidth; priceEl.style.animation = '';
+    priceEl.innerHTML = v.price != null
       ? `<b>${rub(v.price)}</b>${v.decant ? `<span class="mute">${rub(perMl(v))} за 1 мл</span>` : ''}`
       : `<b>Цену подскажем</b><span class="mute">напишите в Telegram</span>`;
     const text = orderText(p, v);
@@ -161,6 +163,7 @@
     const show = i => {
       const v = vols[i];
       $$('.chip', chips).forEach(c => c.setAttribute('aria-pressed', String(+c.dataset.i === i)));
+      out.style.animation = 'none'; void out.offsetWidth; out.style.animation = '';
       out.innerHTML = `<b>${rub(v.price)}</b>${v.decant ? `<span class="mute">${rub(perMl(v))} за 1 мл</span>` : ''}`;
     };
     chips.addEventListener('click', e => { const c = e.target.closest('.chip'); if (c) show(+c.dataset.i); });
@@ -204,6 +207,7 @@
       if (state.sort === 'desc') list = [...list].sort((a, b) => minPrice(b) - minPrice(a));
       $('#shown').textContent = list.length;
       grid.innerHTML = list.map(card).join('');
+      animate(grid);
       $('#empty').hidden = list.length > 0;
       grid.hidden = list.length === 0;
     }
@@ -227,17 +231,65 @@
     render();
   }
 
+  /* ---------- плавность: проявление блоков и фото ---------- */
+  // var: animate() вызывается из каталога раньше этих строк
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var started = false;
+  var pending = new Set();
+  var queued = false;
+
+  // Видимость считаем по getBoundingClientRect на прокрутке — работает в любом браузере, в том числе во встроенном в Telegram.
+  function check() {
+    queued = false;
+    const h = innerHeight;
+    pending.forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < h * 0.94 && r.bottom > 0) { el.classList.add('is-in'); pending.delete(el); }
+    });
+  }
+  function queueCheck() { if (!queued) { queued = true; setTimeout(check, 40); } }
+
+  function animate(root = document) {
+    if (reduce || !started) return;
+    const scope = root === document ? document : root.parentNode;
+    const groups = ['.banners > *', '.perks > div', '.block-head', '.grid', '.brands', '.decant-panel', '.place > *', '.info-row > *', '.cat-title', '.filters'];
+    const add = (el, delay) => { el.classList.add('reveal'); el.style.setProperty('--d', `${delay}ms`); pending.add(el); };
+    $$(groups.join(','), scope).forEach(el => {
+      if (el.classList.contains('grid') || el.classList.contains('brands')) {
+        [...el.children].forEach((c, i) => { if (!c.classList.contains('reveal')) add(c, Math.min(i, 8) * 60); });
+      } else if (!el.classList.contains('reveal')) {
+        add(el, Math.min([...el.parentNode.children].indexOf(el), 4) * 80);
+      }
+    });
+    $$('.card-img img, .banner-photo img, .decant-photo img', root).forEach(img => {
+      if (img.classList.contains('fade-img')) return;
+      img.classList.add('fade-img');
+      const done = () => img.classList.add('is-loaded');
+      img.complete && img.naturalWidth ? setTimeout(done, 30) : img.addEventListener('load', done, { once: true });
+      img.addEventListener('error', done, { once: true });
+    });
+    queueCheck();
+  }
+  function startAnimations() {
+    if (reduce || started) return;
+    started = true;
+    document.documentElement.classList.add('js-anim');
+    addEventListener('scroll', queueCheck, { passive: true });
+    addEventListener('resize', queueCheck);
+    animate();
+  }
+
   /* ---------- интро: один раз за визит ---------- */
   const intro = $('#intro');
   if (intro) {
     let seen = false;
     try { seen = sessionStorage.getItem('zikr-intro') === '1'; } catch (e) {}
     if (new URLSearchParams(location.search).has('intro')) seen = false;
-    if (seen) { intro.remove(); return; }
+    if (seen) { intro.remove(); startAnimations(); return; }
     document.body.classList.add('is-locked');
     const start = () => {
       intro.classList.add('play');
-      setTimeout(() => intro.classList.add('out'), 1350);
+      setTimeout(() => { intro.classList.add('out'); startAnimations(); }, 1350);
       setTimeout(() => {
         intro.remove();
         document.body.classList.remove('is-locked');
@@ -246,4 +298,5 @@
     };
     (document.fonts ? document.fonts.load('700 100px Antonio') : Promise.resolve()).catch(() => {}).then(start);
   }
+  if (!intro) startAnimations();
 })();
