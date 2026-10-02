@@ -251,6 +251,33 @@
     render();
   }
 
+  /* ---------- бургер-меню: раскрывается кругом от кнопки ---------- */
+  const menu = $('#menu'), burger = $('.burger');
+  if (menu && burger) {
+    $('#menu-brands').innerHTML = [...new Set(DATA.map(p => p.brand))]
+      .map(b => `<a href="catalog.html?brand=${encodeURIComponent(b)}">${esc(b)}</a>`).join('');
+    $$('.menu-links a', menu).forEach((a, i) => a.style.setProperty('--i', i));
+    $('.menu-side', menu).style.setProperty('--i', 5);
+    const setOrigin = () => {
+      const r = burger.getBoundingClientRect();
+      menu.style.setProperty('--mx', `${r.left + r.width / 2}px`);
+      menu.style.setProperty('--my', `${r.top + r.height / 2}px`);
+    };
+    const open = () => {
+      setOrigin(); menu.classList.add('is-open'); menu.setAttribute('aria-hidden', 'false');
+      burger.setAttribute('aria-expanded', 'true'); document.body.classList.add('is-locked');
+      setTimeout(() => $('.menu-close', menu).focus(), 300);
+    };
+    const close = () => {
+      setOrigin(); menu.classList.remove('is-open'); menu.setAttribute('aria-hidden', 'true');
+      burger.setAttribute('aria-expanded', 'false'); document.body.classList.remove('is-locked'); burger.focus();
+    };
+    burger.addEventListener('click', open);
+    $('.menu-close', menu).addEventListener('click', close);
+    menu.addEventListener('click', e => { if (e.target.closest('a')) close(); });
+    addEventListener('keydown', e => { if (e.key === 'Escape' && menu.classList.contains('is-open')) close(); });
+  }
+
   /* ---------- плавность: проявление блоков и фото ---------- */
   // var: animate() вызывается из каталога раньше этих строк
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
