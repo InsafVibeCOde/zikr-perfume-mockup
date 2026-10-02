@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Каталог — ZIKR PERFUME</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:wght@700;800&family=Sofia+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="header header--solid">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="img/logo-white.png" alt="ZIKR PERFUME"></a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="catalog.html" aria-current="page">Каталог</a>
+      <a href="catalog.html?f=decant">Распив</a>
+      <a href="index.html#boutique">Бутик</a>
+      <a href="index.html#delivery">Доставка</a>
+    </nav>
+    <a class="header-phone" href="tel:+79655857722">+7 965 585-77-22</a>
+    <a class="btn btn-white" href="https://t.me/yuzeevv" target="_blank" rel="noopener">Написать в Telegram</a>
+  </div>
+</header>
+
+<main>
+  <section class="cat-head">
+    <div class="wrap">
+      <h1 class="display">Каталог<span class="cat-count"><span id="total"></span> ароматов</span></h1>
+
+      <label class="search">
+        <span class="mute" aria-hidden="true">Поиск</span>
+        <input id="q" type="search" placeholder="Бренд, аромат или ноты: табак, кожа, ваниль" autocomplete="off">
+      </label>
+
+      <div class="filters">
+        <button class="chip" type="button" data-format="all">Все</button>
+        <button class="chip" type="button" data-format="decant">Есть распив</button>
+        <button class="chip" type="button" data-format="full">Флаконы</button>
+        <span class="sep" aria-hidden="true"></span>
+        <button class="chip" type="button" data-gender="all">Для всех</button>
+        <button class="chip" type="button" data-gender="Мужской">Мужские</button>
+        <button class="chip" type="button" data-gender="Женский">Женские</button>
+        <button class="chip" type="button" data-gender="Унисекс">Унисекс</button>
+        <span class="sep" aria-hidden="true"></span>
+        <select class="select" id="f-family" aria-label="Характер"><option value="all">Любой характер</option></select>
+        <select class="select" id="f-brand" aria-label="Бренд"><option value="all">Все бренды</option></select>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat-body">
+    <div class="wrap">
+      <div class="cat-meta">
+        <span>Показано: <span id="shown"></span></span>
+        <select class="select" id="f-sort" aria-label="Сортировка">
+          <option value="default">Сначала популярные</option>
+          <option value="asc">Сначала дешевле</option>
+          <option value="desc">Сначала дороже</option>
+        </select>
+      </div>
+      <div class="grid" id="catalog"></div>
+      <div class="empty" id="empty" hidden>
+        <p class="display">Такого пока нет в каталоге</p>
+        <p class="mute" style="margin-top:12px">Напишите, какой аромат ищете. Многое привозим под заказ.</p>
+        <a class="btn btn-black" id="empty-tg" target="_blank" rel="noopener">Написать в Telegram</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer dark">
+  <div class="wrap">
+    <div class="footer-bottom" style="margin-top:0">
+      <span>© ZIKR PERFUME, 2026. Казань, ул. Дзержинского, 9/1</span>
+      <a href="tel:+79655857722">+7 965 585-77-22</a>
+    </div>
+  </div>
+</footer>
+
+<div class="mbar">
+  <a class="btn btn-white" href="https://t.me/yuzeevv" target="_blank" rel="noopener">Telegram</a>
+  <a class="btn btn-outline" style="color:#fff" href="https://wa.me/79655857722" target="_blank" rel="noopener">WhatsApp</a>
+</div>
+
+<dialog class="modal" id="modal" aria-label="Карточка аромата">
+  <button class="modal-close" type="button" aria-label="Закрыть">×</button>
+  <div class="modal-inner"></div>
+</dialog>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
