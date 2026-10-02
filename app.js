@@ -79,7 +79,7 @@
     if (!p || !modal) return;
     current = p;
     const first = p.volumes.find(v => v.price != null) || p.volumes[0];
-    const tiles = [['Концентрация', p.conc], ['Характер', p.family && p.family.join(', ')], ['Год', p.year]].filter(t => t[1]);
+    const tiles = [['Концентрация', p.conc], ['Год', p.year]].filter(t => t[1]);
 
     $('.modal-inner', modal).innerHTML = `
       <div class="modal-img">${photo(p)}</div>
@@ -171,16 +171,14 @@
   const grid = $('#catalog');
   if (grid) {
     const params = new URLSearchParams(location.search);
-    const state = { q: params.get('q') || '', format: params.get('f') === 'decant' ? 'decant' : 'all', families: new Set(), brands: new Set(), sort: 'default' };
+    const state = { q: params.get('q') || '', format: params.get('f') === 'decant' ? 'decant' : 'all', brands: new Set(), sort: 'default' };
     if (params.get('brand')) state.brands.add(params.get('brand'));
     $('#q').value = state.q;
 
     const count = fn => DATA.filter(fn).length;
-    const families = [...new Set(DATA.flatMap(p => p.family || []))].sort();
     const brands = [...new Set(DATA.map(p => p.brand))].sort();
     const box = (name, value, label, n) =>
       `<label><input type="checkbox" name="${name}" value="${esc(value)}">${esc(label)}<span class="count">${n}</span></label>`;
-    $('#f-family').innerHTML = families.map(f => box('family', f, f, count(p => (p.family || []).includes(f)))).join('');
     $('#f-brand').innerHTML = brands.map(b => box('brand', b, b, count(p => p.brand === b))).join('');
     $('#f-format').innerHTML = [
       `<label><input type="radio" name="format" value="all">Всё<span class="count">${DATA.length}</span></label>`,
@@ -193,7 +191,6 @@
 
     function syncInputs() {
       $$('input[name=format]').forEach(i => { i.checked = i.value === state.format; });
-      $$('input[name=family]').forEach(i => { i.checked = state.families.has(i.value); });
       $$('input[name=brand]').forEach(i => { i.checked = state.brands.has(i.value); });
     }
 
@@ -202,7 +199,6 @@
       let list = DATA.filter(p =>
         words.every(w => haystack(p).includes(w)) &&
         (state.format === 'all' || (state.format === 'decant' ? hasDecant(p) : hasFull(p))) &&
-        (!state.families.size || (p.family || []).some(f => state.families.has(f))) &&
         (!state.brands.size || state.brands.has(p.brand)));
       if (state.sort === 'asc') list = [...list].sort((a, b) => minPrice(a) - minPrice(b));
       if (state.sort === 'desc') list = [...list].sort((a, b) => minPrice(b) - minPrice(a));
@@ -215,12 +211,11 @@
     $('.filters').addEventListener('change', e => {
       const t = e.target;
       if (t.name === 'format') state.format = t.value;
-      if (t.name === 'family') t.checked ? state.families.add(t.value) : state.families.delete(t.value);
       if (t.name === 'brand') t.checked ? state.brands.add(t.value) : state.brands.delete(t.value);
       render();
     });
     $('#reset').addEventListener('click', () => {
-      Object.assign(state, { q: '', format: 'all', sort: state.sort }); state.families.clear(); state.brands.clear();
+      Object.assign(state, { q: '', format: 'all', sort: state.sort }); state.brands.clear();
       $('#q').value = ''; syncInputs(); render();
     });
     $('#q').addEventListener('input', e => { state.q = e.target.value; render(); });

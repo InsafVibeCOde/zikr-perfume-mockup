@@ -1,4 +1,4 @@
-/* ZIKR PERFUME — макет v2. Магазин в духе Золотого Яблока, но тёплый: бежевые подложки, винный акцент. */
+/* ZIKR PERFUME — макет v2. Магазин в духе Золотого Яблока, но тёплый: бежевые подложки, акцент — тёмный шоколад. */
 :root {
   --bg: #FBFAF8;
   --sand: #F2EDE7;
@@ -6,8 +6,8 @@
   --ink: #2A201B;
   --mute: #8A7F77;
   --line: #E6DFD7;
-  --wine: #5C1A24;
-  --wine-2: #74222F;
+  --wine: #3B2A22;
+  --wine-2: #543D31;
   --ivory: #F7F1E8;
   --espresso: #211915;
   --serif: "Tenor Sans", "Times New Roman", serif;
@@ -81,7 +81,7 @@ body.is-locked { overflow: hidden; }
 .banner-side { background: var(--sand); grid-template-rows: 1fr auto; }
 .banner-text { padding: clamp(24px, 3vw, 44px); display: flex; flex-direction: column; justify-content: center; gap: 16px; }
 .banner-main h1 { font: 400 clamp(30px, 3.2vw, 46px)/1.1 var(--serif); }
-.banner-main p { color: #E6D6CC; max-width: 30em; }
+.banner-main p { color: #E3D7CC; max-width: 30em; }
 .banner-main .btn { align-self: flex-start; margin-top: 8px; }
 .banner-photo { position: relative; min-height: 260px; }
 .banner-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -161,7 +161,7 @@ body.is-locked { overflow: hidden; }
 .info-card ul { list-style: none; margin-top: 12px; }
 .info-card li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 14px; }
 .info-card--wine { background: var(--wine); color: var(--ivory); border-color: var(--wine); display: flex; flex-direction: column; gap: 10px; }
-.info-card--wine p { color: #E6D6CC; font-size: 14px; }
+.info-card--wine p { color: #E3D7CC; font-size: 14px; }
 .info-card--wine .btn { align-self: flex-start; margin-top: auto; }
 
 /* ---------- подвал ---------- */
