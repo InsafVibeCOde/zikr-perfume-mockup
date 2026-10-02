@@ -156,18 +156,40 @@
 
   const demo = $('#decant-demo');
   if (demo) {
-    const vols = DATA.find(x => x.id === 'blonde-amber').volumes;
-    const chips = $('.chips', demo), out = $('.decant-price', demo);
-    chips.innerHTML = vols.map((v, i) =>
-      `<button type="button" class="chip" data-i="${i}" aria-pressed="${i === 1}">${v.ml} мл${v.decant ? '' : '<small>флакон</small>'}</button>`).join('');
+    const vols = DATA.find(x => x.id === 'blonde-amber').volumes.filter(v => v.decant);
+    const chips = $('.chips', demo), out = $('.decant-price', demo), vial = $('.vial');
+    chips.innerHTML = vols.map((v, i) => `<button type="button" class="chip" data-i="${i}" aria-pressed="${i === 1}">${v.ml} мл</button>`).join('');
     const show = i => {
       const v = vols[i];
       $$('.chip', chips).forEach(c => c.setAttribute('aria-pressed', String(+c.dataset.i === i)));
       out.style.animation = 'none'; void out.offsetWidth; out.style.animation = '';
-      out.innerHTML = `<b>${rub(v.price)}</b>${v.decant ? `<span class="mute">${rub(perMl(v))} за 1 мл</span>` : ''}`;
+      out.innerHTML = `<b>${rub(v.price)}</b><span class="mute">${rub(perMl(v))} за 1 мл</span>`;
+      if (vial) vial.style.setProperty('--f', (v.ml / 20 * 0.96).toFixed(3));
     };
     chips.addEventListener('click', e => { const c = e.target.closest('.chip'); if (c) show(+c.dataset.i); });
     show(1);
+  }
+
+  const track = $('#brand-track');
+  if (track) {
+    const names = [...new Set(DATA.map(p => p.brand))].map(b => `<span>${esc(b)}</span>`).join('');
+    track.innerHTML = names + names;
+  }
+
+  // витрина на первом экране слегка следует за курсором
+  const hero = $('.hero');
+  if (hero && !matchMedia('(prefers-reduced-motion: reduce)').matches && matchMedia('(hover: hover)').matches) {
+    const items = $$('.show-item', hero);
+    hero.addEventListener('pointermove', e => {
+      const r = hero.getBoundingClientRect();
+      const dx = (e.clientX - r.left) / r.width - .5, dy = (e.clientY - r.top) / r.height - .5;
+      items.forEach(it => {
+        const d = +it.dataset.depth || 10;
+        it.style.setProperty('--px', `${(-dx * d).toFixed(1)}px`);
+        it.style.setProperty('--py', `${(-dy * d).toFixed(1)}px`);
+      });
+    });
+    hero.addEventListener('pointerleave', () => items.forEach(it => { it.style.setProperty('--px', '0px'); it.style.setProperty('--py', '0px'); }));
   }
 
   /* ---------- каталог ---------- */
@@ -252,7 +274,7 @@
   function animate(root = document) {
     if (reduce || !started) return;
     const scope = root === document ? document : root.parentNode;
-    const groups = ['.banners > *', '.perks > div', '.block-head', '.grid', '.brands', '.decant-panel', '.place > *', '.info-row > *', '.cat-title', '.filters'];
+    const groups = ['.hero-text', '.showcase', '.perks > div', '.block-head', '.grid', '.brands', '.decant-panel', '.place > *', '.info-row > *', '.cat-title', '.filters'];
     const add = (el, delay) => { el.classList.add('reveal'); el.style.setProperty('--d', `${delay}ms`); pending.add(el); };
     $$(groups.join(','), scope).forEach(el => {
       if (el.classList.contains('grid') || el.classList.contains('brands')) {
@@ -261,7 +283,7 @@
         add(el, Math.min([...el.parentNode.children].indexOf(el), 4) * 80);
       }
     });
-    $$('.card-img img, .banner-photo img, .decant-photo img', root).forEach(img => {
+    $$('.card-img img, .show-item img', root).forEach(img => {
       if (img.classList.contains('fade-img')) return;
       img.classList.add('fade-img');
       const done = () => img.classList.add('is-loaded');

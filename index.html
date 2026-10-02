@@ -52,25 +52,35 @@
 </header>
 
 <main>
-  <div class="wrap banners">
-    <section class="banner banner-main">
-      <div class="banner-text">
-        <h1>Тот же флакон. Без наценки сетей.</h1>
-        <p>Оригинальная парфюмерия из ОАЭ и Европы. Полные флаконы и распив от 5 мл.</p>
-        <a class="btn btn-ivory" href="catalog.html">Смотреть каталог</a>
+  <div class="wrap">
+    <section class="hero">
+      <div class="hero-text">
+        <p class="hero-place">Казань, у парка «Чёрное озеро»</p>
+        <h1>Бутик оригинальной парфюмерии</h1>
+        <p class="hero-lead">Полные флаконы и распив от 5 мл. Ароматы из ОАЭ и Европы, доставка по России за 2–3 дня.</p>
+        <div class="btn-row">
+          <a class="btn btn-ivory" href="catalog.html">Смотреть каталог</a>
+          <a class="btn btn-ghost" href="catalog.html?f=decant">Распив</a>
+        </div>
       </div>
-      <a class="banner-photo" href="#" data-open="red-tobacco" aria-label="Mancera Red Tobacco">
-        <img src="img/red-tobacco.jpg" alt="Mancera Red Tobacco">
-      </a>
+      <div class="showcase" aria-label="Сейчас в бутике">
+        <button class="show-item s1" type="button" data-open="ombre-leather" data-depth="14">
+          <img src="img/ombre-leather.jpg" alt="Tom Ford Ombré Leather">
+          <span class="show-tag"><b>Tom Ford</b>Ombré Leather<em>от 12 900 ₽</em></span>
+        </button>
+        <button class="show-item s2" type="button" data-open="red-tobacco" data-depth="24">
+          <img src="img/red-tobacco.jpg" alt="Mancera Red Tobacco">
+          <span class="show-tag"><b>Mancera</b>Red Tobacco<em>от 10 900 ₽</em></span>
+        </button>
+        <button class="show-item s3" type="button" data-open="amber-wood" data-depth="10">
+          <img src="img/amber-wood.jpg" alt="Ajmal Amber Wood">
+          <span class="show-tag"><b>Ajmal</b>Amber Wood<em>14 900 ₽</em></span>
+        </button>
+      </div>
     </section>
-    <a class="banner banner-side" href="#boutique">
-      <div class="banner-photo"><img src="img/amber-wood.jpg" alt="Ajmal Amber Wood"></div>
-      <div class="banner-text">
-        <h2>Бутик у Чёрного озера</h2>
-        <p>Дзержинского, 9/1. Приходите послушать ароматы и сразу взять распив.</p>
-      </div>
-    </a>
   </div>
+
+  <div class="brand-ticker" aria-hidden="true"><div class="brand-track" id="brand-track"></div></div>
 
   <div class="wrap block">
     <div class="perks">
@@ -93,7 +103,29 @@
 
   <section class="wrap block">
     <div class="decant-panel">
-      <div class="decant-photo"><img src="img/decants.jpg" alt="Флаконы для распива" loading="lazy"></div>
+      <div class="vial-stage" aria-hidden="true">
+        <svg class="vial" viewBox="0 0 160 380">
+          <defs>
+            <linearGradient id="juice" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#C98A45"/><stop offset=".45" stop-color="#E7B271"/><stop offset="1" stop-color="#A9662C"/>
+            </linearGradient>
+            <clipPath id="glass"><rect x="44" y="84" width="72" height="276" rx="20"/></clipPath>
+          </defs>
+          <rect x="58" y="14" width="44" height="52" rx="7" fill="#3B2A22"/>
+          <rect x="66" y="64" width="28" height="22" rx="3" fill="#5A463B"/>
+          <g clip-path="url(#glass)">
+            <rect class="vial-liquid" x="44" y="84" width="72" height="276" fill="url(#juice)"/>
+            <rect x="54" y="84" width="9" height="276" fill="#fff" opacity=".28"/>
+          </g>
+          <rect x="44" y="84" width="72" height="276" rx="20" fill="none" stroke="#B9A999" stroke-width="2"/>
+          <g class="vial-marks" font-size="12" fill="#8A7F77">
+            <line x1="122" x2="132" y1="294" y2="294" stroke="#B9A999"/><text x="138" y="298">5</text>
+            <line x1="122" x2="132" y1="228" y2="228" stroke="#B9A999"/><text x="138" y="232">10</text>
+            <line x1="122" x2="132" y1="161" y2="161" stroke="#B9A999"/><text x="138" y="165">15</text>
+            <line x1="122" x2="132" y1="95" y2="95" stroke="#B9A999"/><text x="138" y="99">20</text>
+          </g>
+        </svg>
+      </div>
       <div class="decant-body">
         <h2>Распив от 5 мл</h2>
         <p>Не берите аромат вслепую. Возьмите 5 или 10 мл и поносите неделю. Платите только за миллилитры, которые берёте.</p>
@@ -101,6 +133,7 @@
           <div class="decant-name">Например, Clive Christian Blonde Amber</div>
           <div class="chips" role="group" aria-label="Объём"></div>
           <div class="decant-price"></div>
+          <p class="decant-full mute">Полный флакон 50 мл — 42 900 ₽</p>
         </div>
         <div class="btn-row"><a class="btn btn-wine" href="catalog.html?f=decant">Всё, что есть на распив</a></div>
       </div>

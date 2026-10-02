@@ -75,19 +75,46 @@ body.is-locked { overflow: hidden; }
 .block-head a { font-size: 14px; color: var(--mute); }
 .block-head a:hover { color: var(--wine); }
 
-.banners { display: grid; grid-template-columns: 1.65fr 1fr; gap: 16px; padding-top: 20px; }
-.banner { position: relative; border-radius: var(--radius); overflow: hidden; display: grid; min-height: 420px; text-decoration: none; }
-.banner-main { background: var(--wine); color: var(--ivory); grid-template-columns: 1fr 1fr; }
-.banner-side { background: var(--sand); grid-template-rows: 1fr auto; }
-.banner-text { padding: clamp(24px, 3vw, 44px); display: flex; flex-direction: column; justify-content: center; gap: 16px; }
-.banner-main h1 { font: 400 clamp(30px, 3.2vw, 46px)/1.1 var(--serif); }
-.banner-main p { color: #E3D7CC; max-width: 30em; }
-.banner-main .btn { align-self: flex-start; margin-top: 8px; }
-.banner-photo { position: relative; min-height: 260px; }
-.banner-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.banner-side .banner-text { padding: 24px 28px 28px; gap: 8px; }
-.banner-side h2 { font: 400 26px/1.15 var(--serif); }
-.banner-side p { color: var(--mute); }
+.hero {
+  display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(24px, 4vw, 64px); align-items: center;
+  margin-top: 20px; padding: clamp(32px, 5vw, 72px); border-radius: var(--radius); overflow: hidden;
+  background: radial-gradient(120% 90% at 85% 20%, #54402F 0%, var(--wine) 55%, #2C1F19 100%); color: var(--ivory);
+}
+.hero-place { font-size: 14px; color: #CDBDB0; }
+.hero h1 { font: 400 clamp(40px, 5.2vw, 76px)/1.02 var(--serif); margin-top: 14px; max-width: 11ch; }
+.hero-lead { margin-top: 20px; color: #E3D7CC; max-width: 30em; font-size: 16px; }
+.hero .btn-row { margin-top: 32px; }
+.btn-ghost { border-color: rgba(247, 241, 232, .4); color: var(--ivory); background: transparent; }
+.btn-ghost:hover { border-color: var(--ivory); background: rgba(247, 241, 232, .08); }
+
+/* витрина: три флакона со сдвигом, слегка следуют за курсором */
+.showcase { position: relative; height: clamp(380px, 38vw, 540px); }
+.show-item {
+  position: absolute; border: 0; padding: 0; cursor: pointer; border-radius: 4px; overflow: hidden; background: #3a2a22;
+  box-shadow: 0 30px 60px -24px rgba(0, 0, 0, .65);
+  transform: translate3d(var(--px, 0px), var(--py, 0px), 0); transition: transform .9s cubic-bezier(.2, .7, .2, 1);
+}
+.show-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(.2, .7, .2, 1); }
+.show-item:hover img { transform: scale(1.05); }
+.s1 { left: 0; top: 16%; width: 33%; height: 66%; }
+.s2 { left: 31%; top: 0; width: 38%; height: 100%; z-index: 2; }
+.s3 { right: 0; top: 24%; width: 31%; height: 60%; }
+.show-tag {
+  position: absolute; left: 10px; right: 10px; bottom: 10px; padding: 9px 11px; border-radius: 4px;
+  background: rgba(251, 250, 248, .94); color: var(--ink); text-align: left; font-size: 13px; line-height: 1.35;
+  opacity: 0; transform: translateY(8px); transition: opacity .35s, transform .35s;
+}
+.show-tag b { display: block; font: 400 11px/1.3 var(--serif); letter-spacing: .08em; text-transform: uppercase; }
+.show-tag em { display: block; font-style: normal; font-weight: 600; margin-top: 2px; }
+.show-item:hover .show-tag, .show-item:focus-visible .show-tag { opacity: 1; transform: none; }
+@media (hover: none) { .show-tag { opacity: 1; transform: none; } }
+
+/* лента брендов */
+.brand-ticker { overflow: hidden; border-bottom: 1px solid var(--line); margin-top: 20px; }
+.brand-track { display: flex; width: max-content; animation: ticker 60s linear infinite; }
+.brand-track span { font: 400 clamp(18px, 1.8vw, 24px)/1 var(--serif); letter-spacing: .12em; text-transform: uppercase; padding: 20px 28px; white-space: nowrap; color: var(--ink); }
+.brand-track span::after { content: ""; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--sand-2); margin-left: 56px; vertical-align: middle; }
+@keyframes ticker { to { transform: translateX(-50%); } }
 
 .perks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 22px 0; }
 .perks b { display: block; font-weight: 500; }
@@ -124,8 +151,10 @@ body.is-locked { overflow: hidden; }
 
 /* ---------- распив ---------- */
 .decant-panel { display: grid; grid-template-columns: 1fr 1.2fr; background: var(--sand); border-radius: var(--radius); overflow: hidden; }
-.decant-photo { position: relative; min-height: 380px; }
-.decant-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.vial-stage { display: grid; place-items: center; padding: 40px 24px; background: var(--sand-2); min-height: 420px; }
+.vial { width: 160px; height: auto; overflow: visible; }
+.vial-liquid { transform-box: fill-box; transform-origin: 50% 100%; transform: scaleY(var(--f, .48)); transition: transform 1s cubic-bezier(.2, .7, .2, 1); }
+.decant-full { margin-top: 10px; font-size: 14px; }
 .decant-body { padding: clamp(24px, 3.4vw, 48px); }
 .decant-body h2 { font: 400 clamp(26px, 2.6vw, 36px)/1.15 var(--serif); }
 .decant-body > p { margin-top: 10px; color: var(--mute); max-width: 34em; }
@@ -245,12 +274,10 @@ body.is-locked { overflow: hidden; }
   .header-main { gap: 16px; height: 64px; }
   .logo img { height: 32px; }
   .nav { overflow-x: auto; gap: 22px; white-space: nowrap; scrollbar-width: none; }
-  .banners, .decant-panel, .place, .info-row { grid-template-columns: 1fr; }
-  .banner { min-height: 0; }
-  .banner-main { grid-template-columns: 1fr; }
-  .banner-photo { height: min(80vw, 420px); }
-  .banner-side .banner-photo { height: min(60vw, 300px); }
-  .decant-photo { min-height: 0; height: min(70vw, 360px); }
+  .hero, .decant-panel, .place, .info-row { grid-template-columns: 1fr; }
+  .showcase { height: min(112vw, 460px); }
+  .vial-stage { min-height: 0; padding: 28px; }
+  .vial { width: 120px; }
   .perks { grid-template-columns: 1fr 1fr; }
   .grid, .grid--4 { grid-template-columns: repeat(2, 1fr); gap: 24px 12px; }
   .brands { grid-template-columns: repeat(2, 1fr); }
@@ -291,9 +318,6 @@ html { scroll-behavior: smooth; scroll-padding-top: 130px; }
 .card:hover .card-img img { transform: scale(1.04); }
 .card-name, .card-brand { transition: color .2s; }
 .card:hover .card-name { color: var(--wine-2); }
-.banner-photo { overflow: hidden; }
-.banner-photo img { transition: opacity .7s ease, transform 1.4s cubic-bezier(.2, .7, .2, 1); }
-.banner:hover .banner-photo img { transform: scale(1.04); }
 .brand-tile, .chip, .btn { transition: background .25s, border-color .25s, color .25s, transform .15s; }
 .btn:active, .chip:active { transform: scale(.98); }
 .modal[open] { animation: modalIn .45s cubic-bezier(.2, .7, .2, 1); }
@@ -306,7 +330,8 @@ html { scroll-behavior: smooth; scroll-padding-top: 130px; }
   html { scroll-behavior: auto; }
   .js-anim .reveal, .js-anim .fade-img { opacity: 1; transform: none; transition: none; }
   .modal[open], .modal[open]::backdrop, .m-price, .decant-price { animation: none; }
-  .banner-photo img, .card-img img { transition: none; }
+  .card-img img, .show-item, .show-item img, .vial-liquid { transition: none; }
+  .brand-track { animation: none; }
 }
 
 /* ---------- интро ---------- */
