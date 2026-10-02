@@ -38,10 +38,17 @@
   const tgLink = text => `https://t.me/${Z.tg}?text=${encodeURIComponent(text)}`;
   const waLink = text => `https://wa.me/${Z.wa}?text=${encodeURIComponent(text)}`;
 
+  // Пока заказчик не переснял ароматы: силуэт флакона на тёплой подложке, у каждого бренда свой оттенок.
+  const TINTS = ['#EFE6DC', '#EDE3DE', '#E9E6DB', '#ECE4D6', '#E6E2DD', '#EFE2D9'];
+  const tint = brand => TINTS[[...brand].reduce((a, c) => a + c.charCodeAt(0), 0) % TINTS.length];
+  const bottle = `<svg class="ph-bottle" viewBox="0 0 120 180" aria-hidden="true">
+      <rect x="44" y="6" width="32" height="34" rx="4"/><rect x="52" y="38" width="16" height="12" opacity=".7"/>
+      <rect x="14" y="48" width="92" height="126" rx="16" opacity=".55"/><rect x="24" y="58" width="8" height="104" rx="4" fill="#fff" opacity=".35"/>
+    </svg>`;
   function photo(p) {
     return p.img
       ? `<img src="${p.img}" alt="${esc(fullName(p))}" loading="lazy">`
-      : `<div class="ph"><b>${esc(p.brand)}</b><span>фото в работе</span></div>`;
+      : `<div class="ph" style="--tint:${tint(p.brand)}">${bottle}<b>${esc(p.brand)}</b><span>${esc(p.name)}</span></div>`;
   }
 
   function card(p) {
@@ -58,9 +65,13 @@
       main = 'Цена по запросу';
       if (hasDecant(p)) sub = 'Есть распив';
     }
+    const vols = p.volumes.map(v => `<i>${v.ml} мл</i>`).join('');
     return `
       <button class="card" type="button" data-id="${p.id}">
-        <div class="card-img">${photo(p)}<div class="card-badges">${hasDecant(p) ? '<span class="badge">Распив</span>' : ''}</div></div>
+        <div class="card-img">${photo(p)}
+          <div class="card-badges">${hasDecant(p) ? '<span class="badge">Распив</span>' : ''}</div>
+          <div class="card-quick"><span class="card-vols">${vols}</span><span class="card-more">Подробнее</span></div>
+        </div>
         <span class="card-brand">${esc(p.brand)}</span>
         <span class="card-name">${esc(p.name)}</span>
         <span class="card-conc">${esc(p.conc)}</span>
@@ -196,60 +207,47 @@
   const grid = $('#catalog');
   if (grid) {
     const params = new URLSearchParams(location.search);
-    const state = { q: params.get('q') || '', format: params.get('f') === 'decant' ? 'decant' : 'all', brands: new Set(), sort: 'default' };
-    if (params.get('brand')) state.brands.add(params.get('brand'));
+    const state = { q: params.get('q') || '', format: params.get('f') === 'decant' ? 'decant' : 'all', brand: params.get('brand') || 'all', sort: 'default' };
     $('#q').value = state.q;
 
-    const count = fn => DATA.filter(fn).length;
     const brands = [...new Set(DATA.map(p => p.brand))].sort();
-    const box = (name, value, label, n) =>
-      `<label><input type="checkbox" name="${name}" value="${esc(value)}">${esc(label)}<span class="count">${n}</span></label>`;
-    $('#f-brand').innerHTML = brands.map(b => box('brand', b, b, count(p => p.brand === b))).join('');
-    $('#f-format').innerHTML = [
-      `<label><input type="radio" name="format" value="all">Всё<span class="count">${DATA.length}</span></label>`,
-      `<label><input type="radio" name="format" value="decant">Есть распив<span class="count">${count(hasDecant)}</span></label>`,
-      `<label><input type="radio" name="format" value="full">Флаконы<span class="count">${count(hasFull)}</span></label>`
-    ].join('');
+    $('#brand-pills').innerHTML = [`<button class="pill" type="button" data-brand="all">Все бренды</button>`]
+      .concat(brands.map(b => `<button class="pill" type="button" data-brand="${esc(b)}">${esc(b)}<span>${DATA.filter(p => p.brand === b).length}</span></button>`)).join('');
+    $('#total').textContent = DATA.length;
 
-    const haystack = p => [p.brand, p.name, p.similar, p.line, ...(p.family || []), ...p.top, ...p.heart, ...p.base]
+    const haystack = p => [p.brand, p.name, p.similar, p.line, ...p.top, ...p.heart, ...p.base]
       .filter(Boolean).join(' ').toLowerCase();
-
-    function syncInputs() {
-      $$('input[name=format]').forEach(i => { i.checked = i.value === state.format; });
-      $$('input[name=brand]').forEach(i => { i.checked = state.brands.has(i.value); });
-    }
 
     function render() {
       const words = state.q.toLowerCase().split(/[\s,]+/).filter(Boolean);
       let list = DATA.filter(p =>
         words.every(w => haystack(p).includes(w)) &&
         (state.format === 'all' || (state.format === 'decant' ? hasDecant(p) : hasFull(p))) &&
-        (!state.brands.size || state.brands.has(p.brand)));
+        (state.brand === 'all' || p.brand === state.brand));
       if (state.sort === 'asc') list = [...list].sort((a, b) => minPrice(a) - minPrice(b));
       if (state.sort === 'desc') list = [...list].sort((a, b) => minPrice(b) - minPrice(a));
+
       $('#shown').textContent = list.length;
       grid.innerHTML = list.map(card).join('');
-      animate(grid);
       $('#empty').hidden = list.length > 0;
       grid.hidden = list.length === 0;
+      $$('.pill').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.brand === state.brand)));
+      $$('.seg button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.format === state.format)));
+      animate(grid);
     }
 
-    $('.filters').addEventListener('change', e => {
-      const t = e.target;
-      if (t.name === 'format') state.format = t.value;
-      if (t.name === 'brand') t.checked ? state.brands.add(t.value) : state.brands.delete(t.value);
-      render();
+    $('#brand-pills').addEventListener('click', e => {
+      const b = e.target.closest('.pill'); if (!b) return;
+      state.brand = state.brand === b.dataset.brand ? 'all' : b.dataset.brand; render();
     });
-    $('#reset').addEventListener('click', () => {
-      Object.assign(state, { q: '', format: 'all', sort: state.sort }); state.brands.clear();
-      $('#q').value = ''; syncInputs(); render();
+    $('.seg').addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b) return;
+      state.format = b.dataset.format; render();
     });
     $('#q').addEventListener('input', e => { state.q = e.target.value; render(); });
     $('.search-form').addEventListener('submit', e => e.preventDefault());
     $('#f-sort').addEventListener('change', e => { state.sort = e.target.value; render(); });
-    $('.filters-toggle').addEventListener('click', () => $('.filters').classList.toggle('is-open'));
     $('#empty-tg').href = tgLink('Здравствуйте! Ищу аромат, которого нет в каталоге: ');
-    syncInputs();
     render();
   }
 
@@ -274,11 +272,11 @@
   function animate(root = document) {
     if (reduce || !started) return;
     const scope = root === document ? document : root.parentNode;
-    const groups = ['.hero-text', '.showcase', '.perks > div', '.block-head', '.grid', '.brands', '.decant-panel', '.place > *', '.info-row > *', '.cat-title', '.filters'];
+    const groups = ['.hero-text', '.showcase', '.perks > div', '.block-head', '.grid', '.brands', '.decant-panel', '.place > *', '.info-row > *', '.cat-hero', '.toolbar'];
     const add = (el, delay) => { el.classList.add('reveal'); el.style.setProperty('--d', `${delay}ms`); pending.add(el); };
     $$(groups.join(','), scope).forEach(el => {
       if (el.classList.contains('grid') || el.classList.contains('brands')) {
-        [...el.children].forEach((c, i) => { if (!c.classList.contains('reveal')) add(c, Math.min(i, 8) * 60); });
+        [...el.children].forEach((c, i) => { if (!c.classList.contains('reveal')) add(c, Math.min(i, 8) * 50); });
       } else if (!el.classList.contains('reveal')) {
         add(el, Math.min([...el.parentNode.children].indexOf(el), 4) * 80);
       }

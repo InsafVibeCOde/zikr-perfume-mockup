@@ -136,9 +136,25 @@ body.is-locked { overflow: hidden; }
 .card-price { font-size: 17px; font-weight: 600; margin-top: 8px; white-space: nowrap; }
 .card-decant { font-size: 13px; color: var(--wine); margin-top: 2px; }
 
-.ph { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 6px; color: #B3A79C; }
-.ph b { font: 400 clamp(16px, 1.5vw, 20px)/1.2 var(--serif); letter-spacing: .06em; text-transform: uppercase; padding: 0 12px; }
-.ph span { font-size: 12px; }
+.ph {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  background: radial-gradient(80% 60% at 50% 40%, #fff8 0%, transparent 70%), var(--tint, var(--sand)); color: #7E7168; text-align: center; padding: 16px;
+}
+.ph-bottle { width: 38%; max-width: 120px; fill: #CDBFB1; margin-bottom: 10px; }
+.ph b { font: 400 13px/1.3 var(--serif); letter-spacing: .1em; text-transform: uppercase; color: var(--ink); }
+.ph span { font: 400 clamp(15px, 1.3vw, 18px)/1.2 var(--serif); }
+
+/* быстрый просмотр объёмов при наведении */
+.card-quick {
+  position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 8px 10px; border-radius: 4px; background: rgba(251, 250, 248, .95); font-size: 12px;
+  opacity: 0; transform: translateY(10px); transition: opacity .3s, transform .3s;
+}
+.card-vols { display: flex; flex-wrap: wrap; gap: 4px; }
+.card-vols i { font-style: normal; padding: 2px 6px; border: 1px solid var(--line); border-radius: 3px; }
+.card-more { font-weight: 500; white-space: nowrap; }
+.card:hover .card-quick, .card:focus-visible .card-quick { opacity: 1; transform: none; }
+@media (hover: none) { .card-quick { display: none; } }
 
 /* ---------- бренды ---------- */
 .brands { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
@@ -206,27 +222,43 @@ body.is-locked { overflow: hidden; }
 /* ---------- каталог ---------- */
 .crumbs { font-size: 13px; color: var(--mute); padding-top: 20px; }
 .crumbs a { text-decoration: none; }
-.cat-title { display: flex; align-items: baseline; gap: 12px; margin-top: 8px; }
-.cat-title h1 { font: 400 clamp(28px, 3vw, 40px)/1.1 var(--serif); }
-.cat-layout { display: grid; grid-template-columns: 240px 1fr; gap: 40px; margin-top: 28px; padding-bottom: 40px; }
-.filters { display: grid; gap: 24px; align-content: start; position: sticky; top: 140px; }
-.filter h3 { font-size: 14px; font-weight: 500; margin-bottom: 10px; }
-.filter label { display: flex; align-items: center; gap: 10px; padding: 5px 0; font-size: 14px; cursor: pointer; }
-.filter input { accent-color: var(--wine); width: 16px; height: 16px; }
-.filter .count { margin-left: auto; color: var(--mute); font-size: 13px; }
-.cat-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; font-size: 14px; color: var(--mute); }
+.cat-hero {
+  margin-top: 14px; padding: clamp(28px, 4vw, 52px); border-radius: var(--radius); color: var(--ivory);
+  background: radial-gradient(120% 120% at 90% 0%, #54402F 0%, var(--wine) 55%, #2C1F19 100%);
+  display: grid; gap: 28px;
+}
+.cat-hero h1 { font: 400 clamp(38px, 4.6vw, 64px)/1.02 var(--serif); }
+.cat-hero p { margin-top: 10px; color: #E3D7CC; }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 16px; border-radius: 999px; cursor: pointer;
+  border: 1px solid rgba(247, 241, 232, .3); background: transparent; color: var(--ivory);
+  font: 400 13px/1 var(--serif); letter-spacing: .08em; text-transform: uppercase; transition: background .25s, border-color .25s, color .25s;
+}
+.pill span { font: 400 12px var(--sans); letter-spacing: 0; opacity: .6; }
+.pill:hover { border-color: var(--ivory); }
+.pill[aria-pressed="true"] { background: var(--ivory); color: var(--wine); border-color: var(--ivory); }
+
+.toolbar {
+  position: sticky; top: 122px; z-index: 10; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  margin-top: 16px; padding: 12px 0; background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.toolbar-count { color: var(--mute); font-size: 14px; margin-left: auto; }
+.seg { display: inline-flex; padding: 4px; border-radius: var(--radius); background: var(--sand); }
+.seg button { height: 34px; padding: 0 16px; border: 0; border-radius: 4px; background: transparent; cursor: pointer; font-size: 14px; color: var(--mute); transition: background .25s, color .25s; }
+.seg button:hover { color: var(--ink); }
+.seg button[aria-pressed="true"] { background: var(--bg); color: var(--ink); box-shadow: 0 1px 3px rgba(42, 32, 27, .12); }
+.cat-grid { margin-top: 28px; padding-bottom: 24px; gap: 36px 20px; }
 .select {
   height: 38px; padding: 0 34px 0 12px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--bg);
   font-size: 14px; cursor: pointer; appearance: none; color: var(--ink);
   background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
   background-position: right 16px top 16px, right 11px top 16px; background-size: 5px 5px; background-repeat: no-repeat;
 }
-.reset { background: none; border: 0; color: var(--wine); font-size: 14px; cursor: pointer; text-align: left; padding: 0; }
 .empty { padding: 48px 0; max-width: 30em; }
 .empty h2 { font: 400 26px/1.2 var(--serif); }
 .empty p { margin-top: 8px; color: var(--mute); }
 .empty .btn { margin-top: 20px; }
-.filters-toggle { display: none; }
 
 /* ---------- карточка аромата ---------- */
 .modal {
@@ -267,14 +299,19 @@ body.is-locked { overflow: hidden; }
 @media (max-width: 1180px) {
   .grid { grid-template-columns: repeat(4, 1fr); }
   .grid--4 { grid-template-columns: repeat(3, 1fr); }
-  .header-links { display: none; }
 }
 @media (max-width: 900px) {
   .topbar .wrap > div:last-child, .topbar .wrap > div:first-child span + span { display: none; }
+  .header-links { display: none; }
   .header-main { gap: 16px; height: 64px; }
   .logo img { height: 32px; }
   .nav { overflow-x: auto; gap: 22px; white-space: nowrap; scrollbar-width: none; }
   .hero, .decant-panel, .place, .info-row { grid-template-columns: 1fr; }
+  .toolbar { position: static; gap: 10px; }
+  .toolbar-count { display: none; }
+  .seg { flex: 1; } .seg button { flex: 1; padding: 0 8px; }
+  .pills { flex-wrap: nowrap; overflow-x: auto; margin: 0 -4px; padding: 0 4px; scrollbar-width: none; }
+  .pill { flex: none; }
   .showcase { height: min(112vw, 460px); }
   .vial-stage { min-height: 0; padding: 28px; }
   .vial { width: 120px; }
@@ -282,10 +319,6 @@ body.is-locked { overflow: hidden; }
   .grid, .grid--4 { grid-template-columns: repeat(2, 1fr); gap: 24px 12px; }
   .brands { grid-template-columns: repeat(2, 1fr); }
   .footer-grid { grid-template-columns: 1fr 1fr; }
-  .cat-layout { grid-template-columns: 1fr; gap: 16px; }
-  .filters { position: static; display: none; padding: 16px; background: var(--sand); border-radius: var(--radius); }
-  .filters.is-open { display: grid; }
-  .filters-toggle { display: inline-flex; }
   .modal { width: 100%; max-width: 100%; height: 100%; max-height: 100%; margin: 0; inset: 0; border-radius: 0; }
   .modal-inner { grid-template-columns: 1fr; height: 100%; overflow-y: auto; }
   .modal-img { width: 100%; min-height: 0; height: min(100vw, 480px); }

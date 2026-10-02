@@ -15,7 +15,7 @@
 <div class="topbar">
   <div class="wrap">
     <div><span>Бутик в Казани у Чёрного озера</span><span>Доставка по России 2–3 дня</span></div>
-    <div><a href="tel:+79655857722">+7 965 585-77-22</a><a href="https://t.me/yuzeevv" target="_blank" rel="noopener">Telegram</a><a href="https://wa.me/79655857722" target="_blank" rel="noopener">WhatsApp</a></div>
+    <div><a href="tel:+79655857722">+7 965 585-77-22</a></div>
   </div>
 </div>
 
@@ -44,32 +44,34 @@
 
 <main class="wrap">
   <div class="crumbs"><a href="index.html">Главная</a> / Парфюмерия</div>
-  <div class="cat-title"><h1>Парфюмерия</h1><span class="mute"><span id="shown"></span> ароматов</span></div>
 
-  <div class="cat-layout">
-    <aside class="filters" aria-label="Фильтры">
-      <div class="filter"><h3>Формат</h3><div id="f-format"></div></div>
-      <div class="filter"><h3>Бренд</h3><div id="f-brand"></div></div>
-      <button class="reset" id="reset" type="button">Сбросить фильтры</button>
-    </aside>
+  <section class="cat-hero">
+    <div class="cat-hero-text">
+      <h1>Парфюмерия</h1>
+      <p><span id="total"></span> ароматов в бутике и под заказ. Полные флаконы и распив от 5 мл.</p>
+    </div>
+    <div class="pills" id="brand-pills" role="group" aria-label="Бренды"></div>
+  </section>
 
-    <section>
-      <div class="cat-top">
-        <button class="btn btn-line filters-toggle" type="button">Фильтры</button>
-        <span></span>
-        <select class="select" id="f-sort" aria-label="Сортировка">
-          <option value="default">Сначала популярные</option>
-          <option value="asc">Сначала дешевле</option>
-          <option value="desc">Сначала дороже</option>
-        </select>
-      </div>
-      <div class="grid grid--4" id="catalog"></div>
-      <div class="empty" id="empty" hidden>
-        <h2>Такого пока нет в каталоге</h2>
-        <p>Напишите, какой аромат ищете. Многое привозим под заказ.</p>
-        <a class="btn btn-wine" id="empty-tg" target="_blank" rel="noopener">Написать в Telegram</a>
-      </div>
-    </section>
+  <div class="toolbar">
+    <div class="seg" role="group" aria-label="Формат">
+      <button type="button" data-format="all">Всё</button>
+      <button type="button" data-format="decant">Есть распив</button>
+      <button type="button" data-format="full">Флаконы</button>
+    </div>
+    <span class="toolbar-count">Показано: <span id="shown"></span></span>
+    <select class="select" id="f-sort" aria-label="Сортировка">
+      <option value="default">Сначала популярные</option>
+      <option value="asc">Сначала дешевле</option>
+      <option value="desc">Сначала дороже</option>
+    </select>
+  </div>
+
+  <div class="grid grid--4 cat-grid" id="catalog"></div>
+  <div class="empty" id="empty" hidden>
+    <h2>Такого пока нет в каталоге</h2>
+    <p>Напишите, какой аромат ищете. Многое привозим под заказ.</p>
+    <a class="btn btn-wine" id="empty-tg" target="_blank" rel="noopener">Написать в Telegram</a>
   </div>
 </main>
 
